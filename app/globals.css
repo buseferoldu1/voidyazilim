@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-inter);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #000000;
+  color: #ffffff;
+}
+
+/* Bölümlere yumuşak kayış; sabit navbar için üst boşluk bırak. */
+.void-root section[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* VOID form alanları */
+.void-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.7rem 1rem;
+  font-size: 0.95rem;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.void-input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+.void-input:focus {
+  border-color: rgba(139, 92, 246, 0.6);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+/* Teknoloji şeridi: liste iki kez basıldığı için -50% kesintisiz kayar. */
+@keyframes void-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.void-marquee-track {
+  animation: void-marquee 32s linear infinite;
+  will-change: transform;
+}
+.void-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .void-marquee-track {
+    animation: none;
+  }
+}
