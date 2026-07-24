@@ -45,8 +45,16 @@ export default function Hero({ hero }: { hero: SiteContent["hero"] }) {
     [mx, my]
   );
 
-  // Baslik: harf harf reveal (fade + blur).
-  const letters = useMemo(() => HEADING.split(""), [HEADING]);
+  // Baslik: harf harf reveal (fade + blur). Kelimeler bolunmez birim olarak
+  // sarilir; boylece satir sonu kelime ortasinda kirilmaz. Her harfin global
+  // sirasi (stagger gecikmesi icin) korunur.
+  const words = useMemo(() => {
+    let idx = 0;
+    return HEADING.split(" ").map((word) => ({
+      word,
+      letters: word.split("").map((ch) => ({ ch, i: idx++ })),
+    }));
+  }, [HEADING]);
 
   return (
     <section
@@ -87,21 +95,28 @@ export default function Hero({ hero }: { hero: SiteContent["hero"] }) {
           {hero.badge}
         </motion.span>
 
-        <h1 className="max-w-3xl text-balance text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl">
-          {letters.map((ch, i) => (
-            <motion.span
-              key={`${ch}-${i}`}
-              initial={{ opacity: 0, filter: "blur(12px)", y: 8 }}
-              animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-              transition={{
-                delay: 0.35 + i * 0.028,
-                duration: 0.5,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="inline-block whitespace-pre"
+        <h1 className="max-w-3xl text-balance text-4xl font-extrabold leading-[1.15] tracking-tight text-white sm:text-5xl md:text-6xl">
+          {words.map(({ word, letters }, wi) => (
+            <span
+              key={`${word}-${wi}`}
+              className="mr-[0.25em] inline-block whitespace-nowrap align-top last:mr-0"
             >
-              {ch}
-            </motion.span>
+              {letters.map(({ ch, i }) => (
+                <motion.span
+                  key={`${ch}-${i}`}
+                  initial={{ opacity: 0, filter: "blur(12px)", y: 8 }}
+                  animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                  transition={{
+                    delay: 0.35 + i * 0.028,
+                    duration: 0.5,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className="inline-block"
+                >
+                  {ch}
+                </motion.span>
+              ))}
+            </span>
           ))}
         </h1>
 
