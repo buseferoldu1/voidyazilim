@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import type { SiteContent } from "@/lib/void-content";
 
 export default function References({ references }: { references: SiteContent["references"] }) {
-  // Marka isimleri (admin panelindeki "Projeler" basliklarindan gelir).
-  const brands = references.projects.map((p) => p.title).filter(Boolean);
+  // Marka isim + linkleri (admin panelindeki "Projeler" alanindan gelir).
+  const brands = references.projects.filter((p) => p.title);
   // Kesintisiz dongu icin listeyi iki kez basariz; ikinci kopya ekran
   // okuyuculardan gizlenir.
-  const loop = brands.length ? brands : ["VOID"];
+  const loop = brands.length ? brands : [{ title: "VOID", tag: "", gradient: "", href: undefined }];
 
   return (
     <section id="projeler" className="relative overflow-hidden bg-black py-28">
@@ -48,15 +48,27 @@ export default function References({ references }: { references: SiteContent["re
             ease: "linear",
           }}
         >
-          {[...loop, ...loop].map((name, i) => (
+          {[...loop, ...loop].map((brand, i) => (
             <span
-              key={`${name}-${i}`}
+              key={`${brand.title}-${i}`}
               aria-hidden={i >= loop.length}
-              className="group flex shrink-0 items-center gap-14"
+              className="flex shrink-0 items-center gap-14"
             >
-              <span className="whitespace-nowrap bg-gradient-to-r from-white/85 to-white/55 bg-clip-text text-3xl font-extrabold tracking-tight text-transparent transition-all duration-300 hover:from-violet-300 hover:to-blue-300 sm:text-4xl">
-                {name}
-              </span>
+              {brand.href ? (
+                <a
+                  href={brand.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  tabIndex={i >= loop.length ? -1 : 0}
+                  className="whitespace-nowrap bg-gradient-to-r from-white/85 to-white/55 bg-clip-text text-3xl font-extrabold tracking-tight text-transparent transition-all duration-300 hover:from-violet-300 hover:to-blue-300 sm:text-4xl"
+                >
+                  {brand.title}
+                </a>
+              ) : (
+                <span className="whitespace-nowrap bg-gradient-to-r from-white/85 to-white/55 bg-clip-text text-3xl font-extrabold tracking-tight text-transparent sm:text-4xl">
+                  {brand.title}
+                </span>
+              )}
               <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-r from-violet-500 to-blue-500" />
             </span>
           ))}

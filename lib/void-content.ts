@@ -52,6 +52,7 @@ export interface ProjectItem {
   title: string;
   tag: string;
   gradient: string;
+  href?: string; // Marka seridinde tiklaninca gidilecek site.
 }
 
 export interface TestimonialItem {
@@ -235,18 +236,18 @@ export const DEFAULT_CONTENT: SiteContent = {
   references: {
     eyebrow: "Referanslar",
     title: "Referanslarımız",
-    subtitle: "Dünya standartlarında premium markalar seviyesinde deneyimler.",
+    subtitle: "İlham aldığımız, dünya standartlarında premium web deneyimleri.",
     projects: [
-      { title: "Apple", tag: "Marka", gradient: "from-violet-600/40 to-fuchsia-600/30" },
-      { title: "Tesla", tag: "Marka", gradient: "from-blue-600/40 to-cyan-600/30" },
-      { title: "Spotify", tag: "Marka", gradient: "from-indigo-600/40 to-violet-600/30" },
-      { title: "Nike", tag: "Marka", gradient: "from-sky-600/40 to-blue-600/30" },
-      { title: "Airbnb", tag: "Marka", gradient: "from-violet-600/40 to-fuchsia-600/30" },
-      { title: "Netflix", tag: "Marka", gradient: "from-blue-600/40 to-cyan-600/30" },
-      { title: "Mercedes-Benz", tag: "Marka", gradient: "from-indigo-600/40 to-violet-600/30" },
-      { title: "Porsche", tag: "Marka", gradient: "from-sky-600/40 to-blue-600/30" },
-      { title: "Samsung", tag: "Marka", gradient: "from-violet-600/40 to-fuchsia-600/30" },
-      { title: "Adobe", tag: "Marka", gradient: "from-blue-600/40 to-cyan-600/30" },
+      { title: "Exo Ape", tag: "Stüdyo", gradient: "from-violet-600/40 to-fuchsia-600/30", href: "https://exoape.com" },
+      { title: "Locomotive", tag: "Stüdyo", gradient: "from-blue-600/40 to-cyan-600/30", href: "https://locomotive.ca" },
+      { title: "Cuberto", tag: "Stüdyo", gradient: "from-indigo-600/40 to-violet-600/30", href: "https://cuberto.com" },
+      { title: "Active Theory", tag: "Stüdyo", gradient: "from-sky-600/40 to-blue-600/30", href: "https://activetheory.net" },
+      { title: "Obys", tag: "Stüdyo", gradient: "from-violet-600/40 to-fuchsia-600/30", href: "https://obys.agency" },
+      { title: "Immersive Garden", tag: "Stüdyo", gradient: "from-blue-600/40 to-cyan-600/30", href: "https://immersive-g.com" },
+      { title: "Phantom", tag: "Stüdyo", gradient: "from-indigo-600/40 to-violet-600/30", href: "https://phantom.land" },
+      { title: "Resn", tag: "Stüdyo", gradient: "from-sky-600/40 to-blue-600/30", href: "https://resn.co.nz" },
+      { title: "Igloo Inc", tag: "Stüdyo", gradient: "from-violet-600/40 to-fuchsia-600/30", href: "https://igloo.inc" },
+      { title: "Aristide Benoist", tag: "Stüdyo", gradient: "from-blue-600/40 to-cyan-600/30", href: "https://aristidebenoist.com" },
     ],
   },
   testimonials: {

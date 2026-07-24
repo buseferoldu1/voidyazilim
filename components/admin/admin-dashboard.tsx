@@ -558,13 +558,12 @@ function ReferencesEditor({ content, update }: EditorProps) {
       <Area label="Alt Metin" value={content.references.subtitle} onChange={(v) => update((d) => (d.references.subtitle = v))} />
       <div className="space-y-3 pt-2">
         {content.references.projects.map((p, i) => (
-          <Card key={i} title={`Proje ${i + 1}`} onRemove={() => update((d) => d.references.projects.splice(i, 1))}>
-            <Text label="Başlık" value={p.title} onChange={(v) => update((d) => (d.references.projects[i].title = v))} />
-            <Text label="Etiket" value={p.tag} onChange={(v) => update((d) => (d.references.projects[i].tag = v))} />
-            <Text label="Gradyan (Tailwind)" value={p.gradient} onChange={(v) => update((d) => (d.references.projects[i].gradient = v))} />
+          <Card key={i} title={`Marka ${i + 1}`} onRemove={() => update((d) => d.references.projects.splice(i, 1))}>
+            <Text label="Marka Adı" value={p.title} onChange={(v) => update((d) => (d.references.projects[i].title = v))} />
+            <Text label="Bağlantı (tıklayınca gidilecek site)" value={p.href ?? ""} onChange={(v) => update((d) => (d.references.projects[i].href = v))} />
           </Card>
         ))}
-        <AddButton label="Proje Ekle" onClick={() => update((d) => d.references.projects.push({ title: "Yeni Proje", tag: "Web", gradient: "from-violet-600/40 to-blue-600/30" }))} />
+        <AddButton label="Marka Ekle" onClick={() => update((d) => d.references.projects.push({ title: "Yeni Marka", tag: "Marka", gradient: "from-violet-600/40 to-blue-600/30", href: "" }))} />
       </div>
     </div>
   );
