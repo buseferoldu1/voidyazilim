@@ -29,3 +29,6 @@ next-env.d.ts
 
 # runtime lead data (dosya fallback)
 /data/
+
+.vercel
+.env*

@@ -18,6 +18,10 @@ const DATABASE_URL = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 const LEADS_FILE = path.join(process.cwd(), "data", "void-leads.json");
 
 export interface VoidLead {
+  // Silme icin kararli anahtar. DB modunda satirin sayisal id'si, dosya
+  // modunda receivedAt (yeterince benzersiz). saveLead sirasinda uretilmez;
+  // getLeads okurken doldurulur.
+  id?: string;
   name: string;
   email: string;
   company: string;
@@ -107,10 +111,11 @@ export async function getLeads(): Promise<VoidLead[]> {
         )
       `;
       const rows = (await sql`
-        SELECT name, email, company, budget, message, received_at
+        SELECT id, name, email, company, budget, message, received_at
         FROM void_leads ORDER BY received_at DESC
       `) as Record<string, unknown>[];
       return rows.map((r) => ({
+        id: String(r.id),
         name: String(r.name),
         email: String(r.email),
         company: String(r.company ?? ""),
@@ -130,10 +135,41 @@ export async function getLeads(): Promise<VoidLead[]> {
     if (Array.isArray(list)) {
       return (list as VoidLead[])
         .slice()
-        .sort((a, b) => b.receivedAt.localeCompare(a.receivedAt));
+        .sort((a, b) => b.receivedAt.localeCompare(a.receivedAt))
+        // Dosya modunda kararli anahtar receivedAt'tir.
+        .map((l) => ({ ...l, id: l.receivedAt }));
     }
   } catch {
     // Dosya yoksa bos liste.
   }
   return [];
+}
+
+/**
+ * Bir basvuruyu siler. DB modunda sayisal id ile, dosya modunda receivedAt
+ * ile eslesir (getLeads bu id'yi doldurur). Silinip silinmedigini doner.
+ */
+export async function deleteLead(id: string): Promise<boolean> {
+  if (DATABASE_URL) {
+    try {
+      const sql = neon(DATABASE_URL);
+      const numeric = Number(id);
+      if (!Number.isFinite(numeric)) return false;
+      await sql`DELETE FROM void_leads WHERE id = ${numeric}`;
+      return true;
+    } catch (err) {
+      console.error("[VOID] Basvuru silme hatasi:", err);
+      return false;
+    }
+  }
+  try {
+    const raw = JSON.parse(await fs.readFile(LEADS_FILE, "utf8"));
+    if (!Array.isArray(raw)) return false;
+    const next = (raw as VoidLead[]).filter((l) => l.receivedAt !== id);
+    await fs.writeFile(LEADS_FILE, JSON.stringify(next, null, 2), "utf8");
+    return true;
+  } catch (err) {
+    console.error("[VOID] Basvuru dosyadan silme hatasi:", err);
+    return false;
+  }
 }

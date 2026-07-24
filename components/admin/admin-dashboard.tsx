@@ -71,7 +71,7 @@ export default function AdminDashboard({
 }: Props) {
   const router = useRouter();
   const [content, setContent] = useState<SiteContent>(initialContent);
-  const [leads] = useState<VoidLead[]>(initialLeads);
+  const [leads, setLeads] = useState<VoidLead[]>(initialLeads);
   const [orders, setOrders] = useState<VoidOrder[]>(initialOrders);
   const [active, setActive] = useState<Section>("brand");
   const [saving, setSaving] = useState(false);
@@ -114,6 +114,17 @@ export default function AdminDashboard({
     await fetch("/api/void/admin/logout", { method: "POST" });
     router.replace("/void-admin/login");
     router.refresh();
+  }
+
+  async function deleteLead(id: string) {
+    const prev = leads;
+    setLeads((list) => list.filter((l) => (l.id ?? l.receivedAt) !== id));
+    const res = await fetch("/api/void/admin/leads", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    if (!res.ok) setLeads(prev); // basarisizsa geri al
   }
 
   async function setOrderStatus(id: string, status: OrderStatus) {
@@ -247,7 +258,7 @@ export default function AdminDashboard({
           {active === "contact" && <ContactEditor content={content} update={update} />}
           {active === "footer" && <FooterEditor content={content} update={update} />}
           {active === "settings" && <SettingsEditor content={content} update={update} />}
-          {active === "leads" && <LeadsView leads={leads} />}
+          {active === "leads" && <LeadsView leads={leads} onDelete={deleteLead} />}
           {active === "orders" && <OrdersView orders={orders} onStatus={setOrderStatus} />}
         </main>
       </div>
@@ -660,7 +671,13 @@ function SettingsEditor({ content, update }: EditorProps) {
 // Veri gorunumleri
 // ---------------------------------------------------------------------------
 
-function LeadsView({ leads }: { leads: VoidLead[] }) {
+function LeadsView({
+  leads,
+  onDelete,
+}: {
+  leads: VoidLead[];
+  onDelete: (id: string) => void;
+}) {
   if (leads.length === 0) {
     return (
       <Empty icon={<Inbox size={40} />} title="Henüz mesaj yok" desc="İletişim formundan gelen başvurular burada listelenir." />
@@ -670,22 +687,36 @@ function LeadsView({ leads }: { leads: VoidLead[] }) {
     <div className="space-y-4">
       <SectionHead title={`Mesajlar (${leads.length})`} desc="İletişim formu başvuruları." />
       <div className="space-y-3">
-        {leads.map((l, i) => (
-          <div key={i} className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-semibold text-white">{l.name}</span>
-              <span className="text-xs text-white/40">
-                {new Date(l.receivedAt).toLocaleString("tr-TR")}
-              </span>
+        {leads.map((l, i) => {
+          const key = l.id ?? l.receivedAt ?? String(i);
+          return (
+            <div key={key} className="group rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="font-semibold text-white">{l.name}</span>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-white/40">
+                    {new Date(l.receivedAt).toLocaleString("tr-TR")}
+                  </span>
+                  <button
+                    onClick={() => {
+                      if (confirm("Bu mesajı silmek istediğinize emin misiniz?")) onDelete(key);
+                    }}
+                    aria-label="Mesajı sil"
+                    className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-red-300/70 transition hover:bg-red-500/10 hover:text-red-300"
+                  >
+                    <Trash2 size={14} /> Sil
+                  </button>
+                </div>
+              </div>
+              <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-white/50">
+                <a href={`mailto:${l.email}`} className="hover:text-violet-300">{l.email}</a>
+                {l.company && l.company !== "-" && <span>{l.company}</span>}
+                {l.budget && l.budget !== "-" && <span className="text-emerald-400/80">{l.budget}</span>}
+              </div>
+              <p className="mt-3 whitespace-pre-wrap text-sm text-white/75">{l.message}</p>
             </div>
-            <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-white/50">
-              <a href={`mailto:${l.email}`} className="hover:text-violet-300">{l.email}</a>
-              {l.company && l.company !== "-" && <span>{l.company}</span>}
-              {l.budget && l.budget !== "-" && <span className="text-emerald-400/80">{l.budget}</span>}
-            </div>
-            <p className="mt-3 whitespace-pre-wrap text-sm text-white/75">{l.message}</p>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
