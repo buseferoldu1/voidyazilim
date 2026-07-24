@@ -12,7 +12,13 @@ const LINKS = [
   { label: "İletişim", href: "#iletisim" },
 ];
 
-export default function VoidNavbar() {
+export default function VoidNavbar({
+  brand = "VOID",
+  ctaLabel = "Teklif Al",
+}: {
+  brand?: string;
+  ctaLabel?: string;
+}) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -39,7 +45,7 @@ export default function VoidNavbar() {
           href="#top"
           className="text-lg font-extrabold tracking-[0.3em] text-white"
         >
-          VOID
+          {brand}
         </a>
 
         <ul className="hidden items-center gap-8 md:flex">
@@ -60,7 +66,7 @@ export default function VoidNavbar() {
           href="#iletisim"
           className="hidden rounded-full border border-white/15 bg-white/5 px-5 py-2 text-sm font-medium text-white backdrop-blur transition hover:border-violet-400/60 hover:shadow-[0_0_20px_-4px_rgba(139,92,246,0.7)] md:inline-block"
         >
-          Teklif Al
+          {ctaLabel}
         </a>
 
         <button

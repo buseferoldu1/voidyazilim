@@ -2,30 +2,15 @@
 
 import { useRef, type ReactNode } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { Globe, ShoppingCart, BrainCircuit, Code2 } from "lucide-react";
+import { Globe, ShoppingCart, BrainCircuit, Code2, type LucideIcon } from "lucide-react";
+import type { SiteContent } from "@/lib/void-content";
 
-const SERVICES = [
-  {
-    icon: Globe,
-    title: "Kurumsal Web Siteleri",
-    desc: "Hızlı, SEO uyumlu ve markanızı yansıtan modern kurumsal web deneyimleri.",
-  },
-  {
-    icon: ShoppingCart,
-    title: "E-Ticaret Sistemleri",
-    desc: "Ölçeklenebilir, güvenli ve dönüşüm odaklı e-ticaret altyapıları.",
-  },
-  {
-    icon: BrainCircuit,
-    title: "Yapay Zeka Çözümleri",
-    desc: "LLM entegrasyonları, akıllı asistanlar ve süreçleri otomatikleştiren AI sistemleri.",
-  },
-  {
-    icon: Code2,
-    title: "Özel Yazılım Geliştirme",
-    desc: "İş süreçlerinize özel, uçtan uca tasarlanmış yazılım projeleri.",
-  },
-];
+const ICON_MAP: Record<string, LucideIcon> = {
+  globe: Globe,
+  cart: ShoppingCart,
+  ai: BrainCircuit,
+  code: Code2,
+};
 
 function TiltCard({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -63,7 +48,7 @@ function TiltCard({ children }: { children: ReactNode }) {
   );
 }
 
-export default function Services() {
+export default function Services({ services }: { services: SiteContent["services"] }) {
   return (
     <section id="hizmetler" className="relative bg-black py-28">
       <div className="mx-auto max-w-7xl px-6">
@@ -75,23 +60,22 @@ export default function Services() {
           className="mx-auto max-w-2xl text-center"
         >
           <span className="text-sm font-semibold uppercase tracking-widest text-violet-400">
-            Hizmetler
+            {services.eyebrow}
           </span>
           <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
-            Fikirden Ürüne, Üründen Markaya
+            {services.title}
           </h2>
           <p className="mt-4 text-white/60">
-            Modern web siteleri, e-ticaret sistemleri, yapay zeka çözümleri ve
-            özel yazılım projeleri geliştiriyoruz.
+            {services.subtitle}
           </p>
         </motion.div>
 
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {SERVICES.map((s, i) => {
-            const Icon = s.icon;
+          {services.items.map((s, i) => {
+            const Icon = ICON_MAP[s.icon] ?? Globe;
             return (
               <motion.div
-                key={s.title}
+                key={`${s.title}-${i}`}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}

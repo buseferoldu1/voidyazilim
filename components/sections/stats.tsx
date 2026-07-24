@@ -2,13 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-
-const STATS = [
-  { value: 50, suffix: "+", label: "Tamamlanan Proje" },
-  { value: 30, suffix: "+", label: "Mutlu Müşteri" },
-  { value: 98, prefix: "%", label: "Memnuniyet" },
-  { value: 7, suffix: "/24", label: "Destek", raw: "7/24" },
-];
+import type { SiteContent } from "@/lib/void-content";
 
 function Counter({
   value,
@@ -48,9 +42,10 @@ function Counter({
   );
 }
 
-export default function Stats() {
+export default function Stats({ stats }: { stats: SiteContent["stats"] }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+  const STATS = stats.items;
 
   return (
     <section className="relative border-y border-white/10 bg-black py-20">

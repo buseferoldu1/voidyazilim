@@ -85,3 +85,54 @@ export async function saveLead(
   console.log("[VOID] Basvuru (yalnizca gunluk):", lead);
   return "log";
 }
+
+/**
+ * Tum basvurulari (en yeni ustte) doner. Admin paneli icin.
+ * DATABASE_URL varsa DB'den, yoksa yerel dosyadan okur.
+ */
+export async function getLeads(): Promise<VoidLead[]> {
+  if (DATABASE_URL) {
+    try {
+      const sql = neon(DATABASE_URL);
+      await sql`
+        CREATE TABLE IF NOT EXISTS void_leads (
+          id BIGSERIAL PRIMARY KEY,
+          name TEXT NOT NULL,
+          email TEXT NOT NULL,
+          company TEXT,
+          budget TEXT,
+          message TEXT NOT NULL,
+          received_at TIMESTAMPTZ NOT NULL DEFAULT now()
+        )
+      `;
+      const rows = (await sql`
+        SELECT name, email, company, budget, message, received_at
+        FROM void_leads ORDER BY received_at DESC
+      `) as Record<string, unknown>[];
+      return rows.map((r) => ({
+        name: String(r.name),
+        email: String(r.email),
+        company: String(r.company ?? ""),
+        budget: String(r.budget ?? ""),
+        message: String(r.message),
+        receivedAt:
+          r.received_at instanceof Date
+            ? r.received_at.toISOString()
+            : String(r.received_at),
+      }));
+    } catch (err) {
+      console.error("[VOID] Basvuru DB okuma hatasi:", err);
+    }
+  }
+  try {
+    const list = JSON.parse(await fs.readFile(LEADS_FILE, "utf8"));
+    if (Array.isArray(list)) {
+      return (list as VoidLead[])
+        .slice()
+        .sort((a, b) => b.receivedAt.localeCompare(a.receivedAt));
+    }
+  } catch {
+    // Dosya yoksa bos liste.
+  }
+  return [];
+}

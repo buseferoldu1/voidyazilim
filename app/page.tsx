@@ -11,23 +11,28 @@ import VoidTestimonials from "@/components/sections/void-testimonials";
 import VoidFaq from "@/components/sections/void-faq";
 import ContactSection from "@/components/sections/contact-section";
 import VoidFooter from "@/components/sections/void-footer";
+import { getSiteContent } from "@/lib/void-content";
 
-export default function HomePage() {
+// Icerik admin panelinden guncellenebildigi icin her istekte taze okunur.
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const c = await getSiteContent();
   return (
     <main>
-      <VoidNavbar />
-      <Hero />
+      <VoidNavbar brand={c.brand.name} ctaLabel={c.hero.ctaSecondary} />
+      <Hero hero={c.hero} />
       <TechStack />
-      <Services />
-      <Stats />
-      <Pricing />
-      <References />
+      <Services services={c.services} />
+      <Stats stats={c.stats} />
+      <Pricing pricing={c.pricing} />
+      <References references={c.references} />
       <Void3DSection />
       <Process />
-      <VoidTestimonials />
-      <VoidFaq />
-      <ContactSection />
-      <VoidFooter />
+      <VoidTestimonials testimonials={c.testimonials} />
+      <VoidFaq faq={c.faq} />
+      <ContactSection contact={c.contact} />
+      <VoidFooter footer={c.footer} brand={c.brand.name} contact={c.contact} />
     </main>
   );
 }

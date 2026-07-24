@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Loader2, Mail, MapPin, Phone } from "lucide-react";
 import Magnetic from "@/components/ui/magnetic";
+import type { SiteContent } from "@/lib/void-content";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -15,7 +16,7 @@ const BUDGETS = [
   "Emin değilim",
 ];
 
-export default function ContactSection() {
+export default function ContactSection({ contact }: { contact: SiteContent["contact"] }) {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [serverMsg, setServerMsg] = useState("");
@@ -75,14 +76,13 @@ export default function ContactSection() {
           transition={{ duration: 0.6 }}
         >
           <span className="text-sm font-semibold uppercase tracking-widest text-violet-400">
-            İletişim
+            {contact.eyebrow}
           </span>
           <h2 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl">
-            Bir Sonraki Büyük Projenizi Birlikte İnşa Edelim
+            {contact.title}
           </h2>
           <p className="mt-5 max-w-md text-white/60">
-            Formu doldurun; 24 saat içinde size özel bir yol haritası ve teklifle
-            dönüş yapalım.
+            {contact.subtitle}
           </p>
 
           <ul className="mt-10 space-y-5">
@@ -90,19 +90,19 @@ export default function ContactSection() {
               <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-violet-300">
                 <Mail size={18} />
               </span>
-              merhaba@voidyazilim.com
+              {contact.email}
             </li>
             <li className="flex items-center gap-4 text-white/75">
               <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-blue-300">
                 <Phone size={18} />
               </span>
-              +90 (212) 000 00 00
+              {contact.phone}
             </li>
             <li className="flex items-center gap-4 text-white/75">
               <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-fuchsia-300">
                 <MapPin size={18} />
               </span>
-              Maslak, İstanbul
+              {contact.address}
             </li>
           </ul>
         </motion.div>

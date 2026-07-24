@@ -2,39 +2,14 @@
 
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
+import type { SiteContent } from "@/lib/void-content";
 
-const TESTIMONIALS = [
-  {
-    quote:
-      "VOID ekibi fikrimizi sadece koda değil, gerçek bir markaya dönüştürdü. Dönüşüm oranımız üç ayda %40 arttı.",
-    name: "Elif Yıldırım",
-    role: "Kurucu, Nova Commerce",
-    initials: "EY",
-  },
-  {
-    quote:
-      "Yapay zeka destekli müşteri asistanı sayesinde destek yükümüz yarıya indi. Süreç baştan sona kusursuzdu.",
-    name: "Mert Kaya",
-    role: "CTO, Lumen AI",
-    initials: "MK",
-  },
-  {
-    quote:
-      "Kurumsal sitemiz artık rakiplerimizden çok daha profesyonel görünüyor. Detaylara gösterdikleri özen etkileyici.",
-    name: "Zeynep Demir",
-    role: "Pazarlama Direktörü, Atlas",
-    initials: "ZD",
-  },
-  {
-    quote:
-      "Teslimat zamanında, iletişim şeffaf, sonuç beklentimizin üzerindeydi. Bir sonraki projede yine birlikte çalışacağız.",
-    name: "Can Öztürk",
-    role: "Genel Müdür, Pulse",
-    initials: "CÖ",
-  },
-];
-
-export default function VoidTestimonials() {
+export default function VoidTestimonials({
+  testimonials,
+}: {
+  testimonials: SiteContent["testimonials"];
+}) {
+  const TESTIMONIALS = testimonials.items;
   return (
     <section id="yorumlar" className="relative bg-black py-28">
       <div className="mx-auto max-w-7xl px-6">
@@ -46,10 +21,10 @@ export default function VoidTestimonials() {
           className="mx-auto max-w-2xl text-center"
         >
           <span className="text-sm font-semibold uppercase tracking-widest text-blue-400">
-            Referanslar
+            {testimonials.eyebrow}
           </span>
           <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
-            Müşterilerimiz Ne Diyor?
+            {testimonials.title}
           </h2>
         </motion.div>
 

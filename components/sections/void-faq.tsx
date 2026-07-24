@@ -3,32 +3,11 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus } from "lucide-react";
+import type { SiteContent } from "@/lib/void-content";
 
-const FAQS = [
-  {
-    q: "Bir proje ne kadar sürede tamamlanır?",
-    a: "Kapsamına göre değişmekle birlikte kurumsal web siteleri genellikle 3-5 hafta, e-ticaret ve özel yazılım projeleri 6-12 hafta arasında teslim edilir. İlk görüşmede size net bir zaman çizelgesi sunarız.",
-  },
-  {
-    q: "Süreç nasıl ilerliyor?",
-    a: "Analiz, tasarım, geliştirme ve yayınlama olmak üzere dört aşamalı, şeffaf bir süreç izliyoruz. Her aşamada düzenli demolar ve geri bildirim döngüleriyle sizi sürece dahil ediyoruz.",
-  },
-  {
-    q: "Yayın sonrası destek veriyor musunuz?",
-    a: "Evet. Tüm paketlerimizde ücretsiz destek süresi bulunur; ayrıca bakım, güncelleme ve büyüme odaklı sürekli iş birliği paketleri sunuyoruz.",
-  },
-  {
-    q: "Mevcut sistemimizle entegrasyon mümkün mü?",
-    a: "Kesinlikle. ERP, CRM, ödeme sistemleri ve üçüncü parti API'ler dahil mevcut altyapınızla sorunsuz entegrasyon sağlıyoruz.",
-  },
-  {
-    q: "Yapay zeka çözümleri neleri kapsıyor?",
-    a: "Akıllı müşteri asistanları, içerik ve süreç otomasyonu, öneri sistemleri ve LLM tabanlı özel entegrasyonlar geliştiriyoruz; ihtiyacınıza göre özelleştiriyoruz.",
-  },
-];
-
-export default function VoidFaq() {
+export default function VoidFaq({ faq }: { faq: SiteContent["faq"] }) {
   const [open, setOpen] = useState<number | null>(0);
+  const FAQS = faq.items;
 
   return (
     <section id="sss" className="relative bg-black py-28">
@@ -41,10 +20,10 @@ export default function VoidFaq() {
           className="mb-14 text-center"
         >
           <span className="text-sm font-semibold uppercase tracking-widest text-violet-400">
-            SSS
+            {faq.eyebrow}
           </span>
           <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
-            Sıkça Sorulan Sorular
+            {faq.title}
           </h2>
         </motion.div>
 

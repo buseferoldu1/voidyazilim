@@ -1,31 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import type { SiteContent } from "@/lib/void-content";
 
-const PROJECTS = [
-  {
-    title: "Nova Commerce",
-    tag: "E-Ticaret",
-    gradient: "from-violet-600/40 to-fuchsia-600/30",
-  },
-  {
-    title: "Atlas Kurumsal",
-    tag: "Web Platformu",
-    gradient: "from-blue-600/40 to-cyan-600/30",
-  },
-  {
-    title: "Lumen AI",
-    tag: "Yapay Zeka",
-    gradient: "from-indigo-600/40 to-violet-600/30",
-  },
-  {
-    title: "Pulse Mobile",
-    tag: "Mobil Uygulama",
-    gradient: "from-sky-600/40 to-blue-600/30",
-  },
-];
-
-export default function References() {
+export default function References({ references }: { references: SiteContent["references"] }) {
+  const PROJECTS = references.projects;
   return (
     <section id="projeler" className="relative bg-black py-28">
       <div className="mx-auto max-w-7xl px-6">
@@ -37,13 +16,13 @@ export default function References() {
           className="mx-auto max-w-2xl text-center"
         >
           <span className="text-sm font-semibold uppercase tracking-widest text-blue-400">
-            Projeler
+            {references.eyebrow}
           </span>
           <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
-            Referanslarımız
+            {references.title}
           </h2>
           <p className="mt-4 text-white/60">
-            Farklı sektörlerden markalar için ürettiğimiz seçki çalışmalar.
+            {references.subtitle}
           </p>
         </motion.div>
 

@@ -3,59 +3,10 @@
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import Magnetic from "@/components/ui/magnetic";
+import type { SiteContent } from "@/lib/void-content";
 
-const PLANS = [
-  {
-    name: "Başlangıç",
-    price: "₺25.000",
-    period: "'den başlayan",
-    desc: "Kurumsal kimliğini dijitale taşımak isteyen markalar için.",
-    features: [
-      "Kurumsal web sitesi (5 sayfa)",
-      "Mobil uyumlu responsive tasarım",
-      "Temel SEO optimizasyonu",
-      "İletişim formu entegrasyonu",
-      "Google Analytics kurulumu",
-      "SSL sertifikası & hız optimizasyonu",
-      "1 ay ücretsiz destek",
-    ],
-    highlight: false,
-  },
-  {
-    name: "Profesyonel",
-    price: "₺50.000",
-    period: "'den başlayan",
-    desc: "Büyüyen işletmeler için e-ticaret ve özel çözümler.",
-    features: [
-      "Başlangıç paketindeki her şey",
-      "Özel tasarım web / e-ticaret",
-      "İnteraktif 3D ürün & web deneyimleri",
-      "Ödeme & kargo entegrasyonları",
-      "Yönetim paneli (CMS)",
-      "Gelişmiş SEO, analitik & animasyonlar",
-      "3 ay öncelikli destek",
-    ],
-    highlight: true,
-  },
-  {
-    name: "Kurumsal",
-    price: "Özel",
-    period: "teklif",
-    desc: "Uçtan uca özel yazılım ve yapay zeka projeleri.",
-    features: [
-      "Profesyonel paketteki her şey",
-      "Özel yazılım / SaaS geliştirme",
-      "Yapay zeka & otomasyon sistemleri",
-      "API & üçüncü parti entegrasyonlar",
-      "Ölçeklenebilir bulut altyapısı",
-      "Adanmış proje ekibi",
-      "7/24 SLA destek",
-    ],
-    highlight: false,
-  },
-];
-
-export default function Pricing() {
+export default function Pricing({ pricing }: { pricing: SiteContent["pricing"] }) {
+  const PLANS = pricing.plans;
   return (
     <section id="fiyatlandirma" className="relative bg-black py-28">
       <div className="mx-auto max-w-7xl px-6">
@@ -67,14 +18,13 @@ export default function Pricing() {
           className="mx-auto max-w-2xl text-center"
         >
           <span className="text-sm font-semibold uppercase tracking-widest text-violet-400">
-            Fiyatlandırma
+            {pricing.eyebrow}
           </span>
           <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
-            Projenize Uygun Paket
+            {pricing.title}
           </h2>
           <p className="mt-4 text-white/60">
-            Şeffaf başlangıç bütçeleri; kapsam netleştikçe size özel teklif
-            hazırlarız.
+            {pricing.subtitle}
           </p>
         </motion.div>
 

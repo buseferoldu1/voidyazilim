@@ -2,12 +2,21 @@
 
 import { motion } from "framer-motion";
 
-const PHONE = "902120000000"; // Uluslararasi format, + ve bosluk olmadan
-const MESSAGE = "Merhaba, VOID Yazılım'dan bir proje için bilgi almak istiyorum.";
+const DEFAULT_PHONE = "902120000000"; // Uluslararasi format, + ve bosluk olmadan
+const DEFAULT_MESSAGE =
+  "Merhaba, VOID Yazılım'dan bir proje için bilgi almak istiyorum.";
 
 /** Yuzen WhatsApp butonu — yeni sekmede sohbet acar. */
-export default function VoidWhatsapp() {
-  const href = `https://wa.me/${PHONE}?text=${encodeURIComponent(MESSAGE)}`;
+export default function VoidWhatsapp({
+  phone,
+  message,
+}: {
+  phone?: string;
+  message?: string;
+}) {
+  const href = `https://wa.me/${phone || DEFAULT_PHONE}?text=${encodeURIComponent(
+    message || DEFAULT_MESSAGE
+  )}`;
 
   return (
     <motion.a

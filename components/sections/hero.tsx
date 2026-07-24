@@ -5,8 +5,9 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import ParticleTextEffect from "@/components/ui/particle-text-effect";
 import Magnetic from "@/components/ui/magnetic";
+import type { SiteContent } from "@/lib/void-content";
 
-const WORDS = [
+const DEFAULT_WORDS = [
   "VOID",
   "YAZILIM",
   "WEB",
@@ -16,10 +17,10 @@ const WORDS = [
   "AUTOMATION",
 ];
 
-const HEADING = "Markanızı Dijitalde Rakiplerinizden Ayırın";
-
-export default function Hero() {
+export default function Hero({ hero }: { hero: SiteContent["hero"] }) {
   const containerRef = useRef<HTMLElement>(null);
+  const WORDS = hero.words.length ? hero.words : DEFAULT_WORDS;
+  const HEADING = hero.heading;
 
   // Mouse'a gore blur isiklarin hafif parallax hareketi.
   const mx = useMotionValue(0);
@@ -45,7 +46,7 @@ export default function Hero() {
   );
 
   // Baslik: harf harf reveal (fade + blur).
-  const letters = useMemo(() => HEADING.split(""), []);
+  const letters = useMemo(() => HEADING.split(""), [HEADING]);
 
   return (
     <section
@@ -83,7 +84,7 @@ export default function Hero() {
           className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium text-white/80 backdrop-blur-md"
         >
           <Sparkles size={14} className="text-violet-300" />
-          🚀 Dijital Ürün Geliştirme Stüdyosu
+          {hero.badge}
         </motion.span>
 
         <h1 className="max-w-3xl text-balance text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl">
@@ -110,8 +111,7 @@ export default function Hero() {
           transition={{ delay: 1.1, duration: 0.7 }}
           className="mt-6 max-w-2xl text-pretty text-base text-white/70 sm:text-lg"
         >
-          Kurumsal web siteleri, e-ticaret altyapıları, özel yazılım çözümleri
-          ve yapay zeka sistemleri geliştiriyoruz.
+          {hero.subtitle}
         </motion.p>
 
         <motion.div
@@ -125,7 +125,7 @@ export default function Hero() {
               href="#iletisim"
               className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-600 to-blue-600 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_0_30px_-6px_rgba(139,92,246,0.8)] transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_44px_-4px_rgba(139,92,246,1)]"
             >
-              Proje Başlat
+              {hero.ctaPrimary}
               <ArrowRight
                 size={16}
                 className="transition-transform group-hover:translate-x-1"
@@ -138,7 +138,7 @@ export default function Hero() {
               href="#projeler"
               className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-300 hover:border-blue-400/60 hover:shadow-[0_0_28px_-6px_rgba(59,130,246,0.8)]"
             >
-              Teklif Al
+              {hero.ctaSecondary}
             </a>
           </Magnetic>
         </motion.div>

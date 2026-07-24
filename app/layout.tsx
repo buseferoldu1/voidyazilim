@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import VoidCursor from "@/components/sections/void-cursor";
-import ScrollProgress from "@/components/sections/scroll-progress";
-import VoidPreloader from "@/components/sections/void-preloader";
-import BackToTop from "@/components/sections/back-to-top";
-import VoidWhatsapp from "@/components/sections/void-whatsapp";
-import VoidAiChat from "@/components/sections/void-ai-chat";
+import SiteChrome from "@/components/site-chrome";
+import { getSiteContent } from "@/lib/void-content";
 import "./globals.css";
 
 const inter = Inter({
@@ -27,19 +23,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const content = await getSiteContent();
   return (
     <html lang="tr" className={inter.variable}>
       <body className="void-root min-h-screen bg-black font-sans text-white antialiased">
-        <VoidPreloader />
-        <ScrollProgress />
-        <VoidCursor />
         {children}
-        <BackToTop />
-        <VoidAiChat />
-        <VoidWhatsapp />
+        <SiteChrome phone={content.settings.whatsappPhone} />
       </body>
     </html>
   );
