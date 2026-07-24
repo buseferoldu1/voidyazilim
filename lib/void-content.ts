@@ -172,7 +172,7 @@ export const DEFAULT_CONTENT: SiteContent = {
     items: [
       { value: 1250, suffix: "+", label: "Tamamlanan Proje" },
       { value: 1080, suffix: "+", label: "Mutlu Müşteri" },
-      { value: 99, prefix: "%", suffix: ".9", label: "Memnuniyet" },
+      { value: 91, prefix: "%", label: "Memnuniyet" },
       { value: 7, suffix: "/24", label: "Destek" },
     ],
   },

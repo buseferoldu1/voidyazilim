@@ -68,6 +68,7 @@ async function saveToFile(lead: VoidLead): Promise<boolean> {
       // Dosya henuz yok; yeni liste ile baslanir.
     }
     list.push(lead);
+    await fs.mkdir(path.dirname(LEADS_FILE), { recursive: true });
     await fs.writeFile(LEADS_FILE, JSON.stringify(list, null, 2), "utf8");
     return true;
   } catch (err) {
